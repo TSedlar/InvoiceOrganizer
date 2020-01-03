@@ -9,8 +9,6 @@ import java.awt.Rectangle
 import java.awt.image.BufferedImage
 import java.io.File
 import java.util.*
-import kotlin.math.max
-import kotlin.math.min
 
 val tesseract: Tesseract by lazy {
     val tesseract = Tesseract()
@@ -24,16 +22,11 @@ val modelInvoice: Mat by lazy {
     OpenCV.mat("invoice.png")
 }
 
-val hCompany: Mat by lazy {
-    OpenCV.mat("hco.png")
-}
-
 class InvoiceMat(val image: BufferedImage) {
 
     val matrix = image.toMat()
 
     private var number: String = ""
-    private var company: String = ""
 
     fun findNumberBounds(): Rectangle? {
         matrix.findFirstTemplate(modelInvoice to 0.515)?.let { invoiceBounds ->
@@ -107,29 +100,5 @@ class InvoiceMat(val image: BufferedImage) {
             return number
         }
         return null
-    }
-
-    fun parseCompany(): String {
-        if (company.isNotEmpty()) {
-            return company
-        }
-
-        var parsedCompany = "Dave"
-
-        findNumberBounds()?.let { numberBounds ->
-            numberBounds.x += matrix.px(9.0)
-            numberBounds.y -= matrix.py(5.0)
-            numberBounds.y = max(0, numberBounds.y)
-            numberBounds.width = min(matrix.px(15.0), matrix.width() - numberBounds.x - 1)
-            numberBounds.height += matrix.py(7.5)
-
-            matrix.submat(numberBounds.toCVRect()).findFirstTemplate(hCompany to 0.12)?.let {
-                parsedCompany = "Hoffman"
-            }
-        }
-
-        company = parsedCompany
-
-        return company
     }
 }

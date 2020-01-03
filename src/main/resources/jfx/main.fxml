@@ -12,113 +12,129 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.201" xmlns:fx="http://javafx.com/fxml/1">
-  <children>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #2b2b2b;">
-         <children>
-            <VBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0">
-               <children>
-                  <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="695.0" prefWidth="625.0" style="-fx-background-color: black;">
-                     <children>
-                        <ImageView id="img-invoice" fitHeight="695.0" fitWidth="625.0" pickOnBounds="true" style="-fx-background-color: BLACK;" />
-                     </children>
-                     <VBox.margin>
-                        <Insets top="40.0" />
-                     </VBox.margin>
-                  </Pane>
-                  <Button id="btn-scan" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="28.0" prefWidth="625.0" style="-fx-background-color: #1a1a1a; -fx-text-fill: #9f9f9f;" text="Scan">
-                     <VBox.margin>
-                        <Insets bottom="15.0" top="20.0" />
-                     </VBox.margin>
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                  </Button>
-               </children>
-            </VBox>
-            <VBox prefHeight="775.0" prefWidth="200.0" style="-fx-background-color: #1a1a1a;">
-               <children>
-                  <Label text="Company" textFill="#9f9f9f">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="20.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <TextField id="txt-company" style="-fx-background-color: #2b2b2b; -fx-text-inner-color: #cccccc;">
-                     <VBox.margin>
-                        <Insets left="20.0" right="20.0" top="4.0" />
-                     </VBox.margin>
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </TextField>
-                  <Label text="Invoice Number" textFill="#9f9f9f">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="20.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <TextField id="txt-invoice-number" style="-fx-background-color: #2b2b2b; -fx-text-inner-color: #cccccc;">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="20.0" right="20.0" top="4.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label text="Year" textFill="#9f9f9f">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="20.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <TextField id="txt-year" style="-fx-background-color: #2b2b2b; -fx-text-inner-color: #cccccc;">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="20.0" right="20.0" top="4.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Label text="Month" textFill="#9f9f9f">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="20.0" top="10.0" />
-                     </VBox.margin>
-                  </Label>
-                  <ComboBox id="cmb-month" prefHeight="28.0" prefWidth="247.0" promptText="Jan" style="-fx-background-color: #2b2b2b;">
-                     <VBox.margin>
-                        <Insets left="20.0" right="20.0" top="4.0" />
-                     </VBox.margin>
-                  </ComboBox>
-                  <VBox alignment="BOTTOM_CENTER" prefHeight="490.0" prefWidth="300.0" VBox.vgrow="ALWAYS">
-                     <children>
-                        <Label id="lbl-status" text="Saving..." textFill="#48a0c3" visible="false">
-                           <font>
-                              <Font size="14.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets bottom="10.0" />
-                           </VBox.margin>
-                        </Label>
-                        <Button id="btn-save" mnemonicParsing="false" prefHeight="28.0" prefWidth="210.0" style="-fx-background-color: #2b2b2b; -fx-text-fill: #9f9f9f;" text="Save">
-                           <VBox.margin>
-                              <Insets bottom="15.0" left="20.0" right="20.0" />
-                           </VBox.margin>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+      prefWidth="1000.0" stylesheets="@main.css" xmlns="http://javafx.com/javafx/8.0.201"
+      xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+              prefWidth="1000.0" style="-fx-background-color: #2b2b2b;">
+            <children>
+                <VBox alignment="BOTTOM_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                      minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0">
+                    <children>
+                        <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                              prefHeight="695.0" prefWidth="625.0" style="-fx-background-color: black;">
+                            <children>
+                                <ImageView id="img-invoice" fitHeight="695.0" fitWidth="625.0" pickOnBounds="true"
+                                           style="-fx-background-color: BLACK;"/>
+                                <Label id="lbl-load" alignment="CENTER" contentDisplay="CENTER" layoutY="331.0"
+                                       maxWidth="-Infinity" minWidth="-Infinity" prefHeight="17.0" prefWidth="625.0"
+                                       textFill="WHITE">
+                                    <font>
+                                        <Font size="20.0"/>
+                                    </font>
+                                </Label>
+                            </children>
+                            <VBox.margin>
+                                <Insets top="40.0"/>
+                            </VBox.margin>
+                        </Pane>
+                        <Button id="btn-scan" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                                minWidth="-Infinity" mnemonicParsing="false" prefHeight="28.0" prefWidth="625.0"
+                                style="-fx-background-color: #1a1a1a; -fx-text-fill: #9f9f9f;" text="Scan">
+                            <VBox.margin>
+                                <Insets bottom="15.0" top="20.0"/>
+                            </VBox.margin>
+                            <cursor>
+                                <Cursor fx:constant="HAND"/>
+                            </cursor>
                         </Button>
-                     </children>
-                  </VBox>
-               </children>
-            </VBox>
-         </children>
-      </HBox>
-  </children>
+                    </children>
+                </VBox>
+                <VBox prefHeight="775.0" prefWidth="200.0" style="-fx-background-color: #1a1a1a;">
+                    <children>
+                        <Label text="Company" textFill="#9f9f9f">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets left="20.0" top="10.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <ComboBox id="cmb-company" prefHeight="28.0" prefWidth="247.0" promptText="Company"
+                                  style="-fx-background-color: #2b2b2b;">
+                            <VBox.margin>
+                                <Insets left="20.0" right="20.0" top="4.0"/>
+                            </VBox.margin>
+                        </ComboBox>
+                        <Label text="Invoice Number" textFill="#9f9f9f">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets left="20.0" top="10.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <TextField id="txt-invoice-number"
+                                   style="-fx-background-color: #2b2b2b; -fx-text-inner-color: #cccccc;">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets left="20.0" right="20.0" top="4.0"/>
+                            </VBox.margin>
+                        </TextField>
+                        <Label text="Year" textFill="#9f9f9f">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets left="20.0" top="10.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <TextField id="txt-year" style="-fx-background-color: #2b2b2b; -fx-text-inner-color: #cccccc;">
+                            <font>
+                                <Font size="14.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets left="20.0" right="20.0" top="4.0"/>
+                            </VBox.margin>
+                        </TextField>
+                        <Label text="Month" textFill="#9f9f9f">
+                            <font>
+                                <Font size="18.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets left="20.0" top="10.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <ComboBox id="cmb-month" prefHeight="28.0" prefWidth="247.0" promptText="Jan"
+                                  style="-fx-background-color: #2b2b2b;">
+                            <VBox.margin>
+                                <Insets left="20.0" right="20.0" top="4.0"/>
+                            </VBox.margin>
+                        </ComboBox>
+                        <VBox alignment="BOTTOM_CENTER" prefHeight="490.0" prefWidth="300.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <Label id="lbl-status" text="Saving..." textFill="#48a0c3" visible="false">
+                                    <font>
+                                        <Font size="14.0"/>
+                                    </font>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0"/>
+                                    </VBox.margin>
+                                </Label>
+                                <Button id="btn-save" mnemonicParsing="false" prefHeight="28.0" prefWidth="210.0"
+                                        style="-fx-background-color: #2b2b2b; -fx-text-fill: #9f9f9f;" text="Save">
+                                    <VBox.margin>
+                                        <Insets bottom="15.0" left="20.0" right="20.0"/>
+                                    </VBox.margin>
+                                </Button>
+                            </children>
+                        </VBox>
+                    </children>
+                </VBox>
+            </children>
+        </HBox>
+    </children>
 </VBox>

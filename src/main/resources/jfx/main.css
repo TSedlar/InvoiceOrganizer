@@ -1,5 +1,5 @@
 .root {
-  -fx-focus-color: transparent;
+    -fx-focus-color: transparent;
 }
 
 .tree-cell, .list-cell, .list-view {
@@ -8,7 +8,7 @@
 }
 
 .list-cell, .list-view {
-    -fx-font-size : 11pt;
+    -fx-font-size: 11pt;
 }
 
 .button:hover {
@@ -17,7 +17,7 @@
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: derive(black,90%);
+    -fx-background-color: derive(black, 90%);
     -fx-background-insets: 2, 0, 0;
     -fx-background-radius: 2em;
 }

@@ -2,6 +2,8 @@
 
 A program for scanning invoice data and organizing in Documents accordingly.
 
+Utilizes OpenCV template matching and Tesseract OCR.
+
 ## Screenshot
 
 ![](wiki/image.png)

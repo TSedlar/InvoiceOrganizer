@@ -18,6 +18,7 @@
             <artifactId>core</artifactId>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/lib/opencv-341.jar</systemPath>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>net.harawata</groupId>
@@ -28,11 +29,6 @@
             <groupId>net.sourceforge.tess4j</groupId>
             <artifactId>tess4j</artifactId>
             <version>4.4.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.asprise.imaging</groupId>
-            <artifactId>java-scanner-access-twain</artifactId>
-            <version>12.0.20.2</version>
         </dependency>
         <dependency>
             <groupId>net.imagej</groupId>
@@ -98,6 +94,4 @@
             </plugin>
         </plugins>
     </build>
-
-
 </project>

@@ -1,6 +1,5 @@
 package me.sedlar.invorg
 
-import com.asprise.imaging.core.Imaging
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.application.Platform.runLater
@@ -15,15 +14,19 @@ import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.scene.image.Image
 import javafx.scene.image.ImageView
+import javafx.scene.paint.Color
 import javafx.stage.Stage
 import javafx.stage.WindowEvent
 import me.sedlar.invorg.util.NativeBundler
 import me.sedlar.invorg.util.OpenCV
+import me.sedlar.invorg.util.StreamGobbler
 import org.opencv.imgcodecs.Imgcodecs
 import java.awt.Desktop
 import java.awt.image.BufferedImage
 import java.io.File
+import java.nio.file.Files
 import java.util.*
+import java.util.concurrent.Executors
 import javax.imageio.ImageIO
 import kotlin.system.exitProcess
 
@@ -56,33 +59,17 @@ val monthShorthand = arrayOf(
     "Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"
 )
 
-val scanArgs = """
-{
-  "twain_cap_setting" : {
-    "ICAP_PIXELTYPE" : "TWPT_RGB",
-    "ICAP_XRESOLUTION" : "200",
-    "ICAP_YRESOLUTION" : "200",
-    "ICAP_SUPPORTEDSIZES" : "TWSS_USLETTER"
-  },
-  "output_settings" : [ {
-    "type" : "save",
-    "format" : "jpg",
-    "save_path" : "${File(NativeBundler.SITE, "tempscan.jpg").absolutePath.replace('\\', '/')}"
-  } ]
-}
-""".trimIndent()
-
 class InvoiceOrganizer : Application() {
 
     private var changedYearManually = false
     private var changedMonthManually = false
-    private var changedCompanyManually = false
 
     private var invoice: InvoiceMat? = null
 
+    private var lblLoad: Label? = null
     private var imgInvoice: ImageView? = null
     private var btnScan: Button? = null
-    private var txtCompany: TextField? = null
+    private var cmbCompany: ComboBox<String>? = null
     private var txtInvoiceNumber: TextField? = null
     private var txtYear: TextField? = null
     private var cmbMonth: ComboBox<String>? = null
@@ -109,14 +96,16 @@ class InvoiceOrganizer : Application() {
 
         runLater {
             setupUI(scene)
+            setupProperties()
         }
     }
 
     @Suppress("UNCHECKED_CAST")
     private fun setupUI(scene: Scene) {
+        lblLoad = scene.lookup("#lbl-load") as Label
         imgInvoice = scene.lookup("#img-invoice") as ImageView
         btnScan = scene.lookup("#btn-scan") as Button
-        txtCompany = scene.lookup("#txt-company") as TextField
+        cmbCompany = scene.lookup("#cmb-company") as ComboBox<String>
         txtInvoiceNumber = scene.lookup("#txt-invoice-number") as TextField
         txtYear = scene.lookup("#txt-year") as TextField
         cmbMonth = scene.lookup("#cmb-month") as ComboBox<String>
@@ -131,10 +120,6 @@ class InvoiceOrganizer : Application() {
 
         btnScan?.setOnAction { scanInvoice() }
 
-        txtCompany?.setOnKeyTyped {
-            changedCompanyManually = true
-        }
-
         txtYear?.setOnKeyTyped {
             changedYearManually = true
         }
@@ -146,6 +131,19 @@ class InvoiceOrganizer : Application() {
         btnSave?.setOnAction { saveInvoice() }
     }
 
+    private fun setupProperties() {
+        val companyFile = File("./companies.txt")
+        if (companyFile.exists()) {
+            val companyTxt = String(Files.readAllBytes(companyFile.toPath()))
+            val companies = companyTxt.lines()
+            cmbCompany?.items?.clear()
+            companies.forEach { company ->
+                cmbCompany?.items?.add(company)
+            }
+            cmbCompany?.selectionModel?.selectFirst()
+        }
+    }
+
     private fun setupDateCombo() {
         monthShorthand.forEach {
             cmbMonth?.items?.add(it)
@@ -153,32 +151,70 @@ class InvoiceOrganizer : Application() {
     }
 
     private fun scanImage(): BufferedImage? {
-        val imaging = Imaging(null)
-        var image: BufferedImage? = null
-        Imaging.getDefaultExecutorServiceForScanning()
-            .submit {
-                try {
-                    val result = imaging.scan(scanArgs, "select", false, true)
-                    val originalImage = result.getImage(0)
-                    image = BufferedImage(originalImage.width, originalImage.height - 15, BufferedImage.TYPE_INT_RGB)
-                    image?.graphics?.drawImage(
-                        originalImage.getSubimage(
-                            0,
-                            0,
-                            originalImage.width,
-                            originalImage.height - 15
-                        ), 0, 0, null
-                    )
-                } catch (err: Exception) {
-                    image = null
-                }
-            }.get()
-        return image
+        val dir = File(NativeBundler.SITE, "lib/")
+        val targetFile = File(NativeBundler.SITE, "tempscan.jpg")
+        val command =
+            "wia-cmd-scanner.exe /w 0 /h 0 /dpi 200 /color RGB /format JPG /output \"${targetFile.absolutePath}\""
+
+        if (targetFile.exists()) {
+            targetFile.delete()
+        }
+        try {
+
+            val builder = ProcessBuilder()
+
+            builder.command("cmd.exe", "/c", command)
+
+            builder.directory(dir)
+
+            val process = builder.start()
+            val streamGobbler = StreamGobbler(process.inputStream) { s ->
+                println(s)
+            }
+
+            Executors.newSingleThreadExecutor().submit(streamGobbler)
+
+            process.waitFor()
+
+            return ImageIO.read(File(NativeBundler.SITE, "tempscan.jpg"))
+        } catch (err: Exception) {
+            err.printStackTrace()
+            return null
+        }
     }
 
     private fun scanInvoice() {
         Thread {
-            scanImage()?.let { jpgImage ->
+            var scanned = false
+            runLater {
+                imgInvoice?.image = null
+                lblLoad?.textFill = Color.WHITE
+                var dots = ""
+                Thread {
+                    while (!scanned) {
+                        runLater {
+                            lblLoad?.text = "Scanning${dots}"
+                        }
+                        if (dots.length >= 3) {
+                            dots = ""
+                        } else {
+                            dots += "."
+                        }
+                        Thread.sleep(500L)
+                    }
+                }.start()
+            }
+            val scannedImg: BufferedImage? = scanImage()
+            scanned = true
+            if (scannedImg == null) {
+                lblLoad?.textFill = Color.RED
+                lblLoad?.text = "Scan failed!"
+            }
+            scannedImg?.let { jpgImage ->
+                runLater {
+                    lblLoad?.text = ""
+                }
+
                 val invoiceImage = BufferedImage(
                     jpgImage.getWidth(null),
                     jpgImage.getHeight(null),
@@ -190,12 +226,6 @@ class InvoiceOrganizer : Application() {
                 imgInvoice?.image = SwingFXUtils.toFXImage(invoiceImage, null)
 
                 invoice = InvoiceMat(invoiceImage)
-
-                if (!changedCompanyManually) {
-                    Thread {
-                        invoice?.parseCompany().let { txtCompany?.text = it }
-                    }.start()
-                }
 
                 Thread {
                     invoice?.parseNumber()?.let { txtInvoiceNumber?.text = it }
@@ -219,10 +249,10 @@ class InvoiceOrganizer : Application() {
 
     private fun saveInvoice() {
         invoice?.let { invoice ->
-            val invoiceCompany = invoice.parseCompany()
             val invoiceNumber = invoice.parseNumber()
 
-            if (invoiceNumber != null && txtInvoiceNumber != null && txtYear != null && cmbMonth != null) {
+            if (invoiceNumber != null && txtInvoiceNumber != null && txtYear != null && cmbCompany != null && cmbMonth != null) {
+                val invoiceCompany = cmbCompany!!.selectionModel.selectedItem
                 val monthName = cmbMonth!!.selectionModel.selectedItem
                 var monthNumber = (monthShorthand.indexOf(monthName) + 1).toString()
 

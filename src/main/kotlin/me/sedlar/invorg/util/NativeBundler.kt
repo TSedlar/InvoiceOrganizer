@@ -22,7 +22,8 @@ object NativeBundler {
 
     @JvmStatic
     val SHARED_LIBS = arrayOf(
-        "/tesseract/eng.traineddata"
+        "/tesseract/eng.traineddata",
+        "/lib/wia-cmd-scanner.exe"
     )
 
     @JvmStatic

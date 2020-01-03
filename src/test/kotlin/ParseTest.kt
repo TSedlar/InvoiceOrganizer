@@ -1,5 +1,6 @@
 import me.sedlar.invorg.InvoiceMat
-import me.sedlar.invorg.util.*
+import me.sedlar.invorg.util.NativeBundler
+import me.sedlar.invorg.util.OpenCV
 import org.junit.Before
 import org.junit.Test
 import java.io.File

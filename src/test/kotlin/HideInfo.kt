@@ -5,12 +5,13 @@ import java.awt.Color
 import java.io.File
 import java.nio.file.Files
 import javax.imageio.ImageIO
-import kotlin.system.exitProcess
 
 fun main() {
     NativeBundler.extractAndUseResourceLibs()
     Files.walk(File("src/test/resources/test_invoices/").toPath()).forEach { path ->
         if (path.toString().endsWith(".jpg")) {
+            if (!path.fileName.toString().contains("1273.jpg"))
+                return@forEach
             val expectedNumber = path.fileName.toString().replace(".jpg", "")
             val invoiceImg = OpenCV.loadMatableImage("../test_invoices/$expectedNumber.jpg")
 
@@ -21,6 +22,7 @@ fun main() {
             val g = img.createGraphics()
 
             invoice.findNumberBounds()?.let { nBounds ->
+                println("!!!!!!!!!!!")
                 g.color = Color.green
                 // Hide company
                 g.fillRect(30, 10, nBounds.x - (nBounds.width * 2.75).toInt(), nBounds.height * 7)
