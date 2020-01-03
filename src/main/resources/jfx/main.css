@@ -1,0 +1,44 @@
+.root {
+  -fx-focus-color: transparent;
+}
+
+.tree-cell, .list-cell, .list-view {
+    -fx-background-color: #2b2b2b;
+    -fx-text-fill: #9f9f9f;
+}
+
+.list-cell, .list-view {
+    -fx-font-size : 11pt;
+}
+
+.button:hover {
+    -fx-background-color: #383838 !important;
+    -fx-cursor: hand;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: derive(black,90%);
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2em;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #2b2b2b;
+    -fx-background-radius: 0em;
+    -fx-padding: 0 10 0 0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0 0;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #2b2b2b;
+    -fx-border-color: #2b2b2b;
+    -fx-background-radius: 0em;
+    -fx-border-radius: 2em;
+}
